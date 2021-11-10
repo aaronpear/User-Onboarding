@@ -26,10 +26,10 @@ const Form = (props) => {
             <form>
                 <div className='error-container'>
                     <div className='errors'>
-                        {/* <div>{errors.name}</div>
+                        <div>{errors.name}</div>
                         <div>{errors.email}</div>
                         <div>{errors.password}</div>
-                        <div>{errors.agreeToTerms}</div> */}
+                        <div>{errors.agreeToTerms}</div>
                     </div>
                 </div>
                 <div className='inputs-container'>
