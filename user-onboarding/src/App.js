@@ -3,6 +3,8 @@ import Form from './components/Form';
 import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import schema from './validation/formSchema';
+import axios from 'axios';
+import User from './components/User';
 
 const initialFormValues = {
   name: '',
@@ -30,13 +32,35 @@ function App() {
     setFormValues({ ...formValues, [name]: value });
   }
 
+  const getUsers = () => {
+    axios.get('https://reqres.in/api/users')
+      .then(response => {
+        setUsers(response.data);
+      })
+      .catch(err => console.error(err))
+  }
+
+
+  const postNewUser = newUser => {
+    axios.post('https://reqres.in/api/users', newUser)
+      .then(response => {
+        setUsers([response.data, ...users]);
+      })
+      .catch(err => console.error(err))
+      .finally(() => {
+        setFormValues(initialFormValues);
+        // console.log(formValues);
+      })
+  }
+
+
   const formSubmit = () => {
     const newUser = {
       name: formValues.name.trim(),
       email: formValues.email.trim(),
       password: formValues.password
     }
-    // postNewUser(newUser);
+    postNewUser(newUser);
   }
 
   const validate = (name, value) => {
@@ -49,19 +73,28 @@ function App() {
     schema.isValid(formValues).then(valid => setDisabled(!valid));
   }, [formValues])
 
+  useEffect(() => {
+    getUsers();
+  }, [])
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Create a New User</h1>
-        <Form 
+      </header>
+      <Form 
           values={formValues}
           change={inputChange}
           submit={formSubmit}
           disabled={disabled}
           errors={formErrors}
-        />
-      </header>
+      />
+      {/* {console.log(users.data)} */}
+        {
+          users.data.map(user => (
+            <User key={user.id} details={user} />
+          ))
+        }
     </div>
   );
 }
