@@ -9,6 +9,18 @@ describe('Create User App', () => {
     const termsCheckbox = () => cy.get('input[name=agreeToTerms]');
     const submitButton = () => cy.get('.submit-button');
 
+    const typeValidName = () => {
+        nameInput().type('name');
+    }
+
+    const typeValidEmail = () => {
+        emailInput().type('email@site.com');
+    }
+
+    const typeValidPass = () => {
+        passInput().type('1234567');
+    }
+
     it('name input correctly updates', () => {
         nameInput().should('exist');
         nameInput().should('have.value', '');
@@ -51,5 +63,36 @@ describe('Create User App', () => {
             cy.contains('firstname lastname');
             cy.contains('thesickestemail@googmeal.com');
         })
+    })
+
+    describe('cannot submit an invalid form', () => {
+        it('empty nameInput disables submitButton', () => {
+            typeValidEmail();
+            typeValidPass();
+            termsCheckbox().click();
+            submitButton().should('be.disabled');
+        })
+
+        it('empty emailInput disables submitButton', () => {
+            typeValidName();
+            typeValidPass();
+            termsCheckbox().click();
+            submitButton().should('be.disabled');
+        })
+        
+        it('empty passInput disables submitButton', () => {
+            typeValidName();
+            typeValidEmail();
+            termsCheckbox().click();
+            submitButton().should('be.disabled');
+        })
+
+        it('unchecked termsCheckbox disables submitButton', () => {
+            typeValidName();
+            typeValidEmail();
+            typeValidPass();
+            submitButton().should('be.disabled');
+        })
+
     })
 })
