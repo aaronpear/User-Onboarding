@@ -6,6 +6,7 @@ describe('Create User App', () => {
     const nameInput = () => cy.get('input[name=name]');
     const emailInput = () => cy.get('input[name=email]');
     const passInput = () => cy.get('input[name=password]');
+    const termsCheckbox = () => cy.get('input[name=agreeToTerms]');
 
     it('checks if name input correctly updates', () => {
         nameInput().should('exist');
@@ -26,5 +27,14 @@ describe('Create User App', () => {
         passInput().should('have.value', '');
         passInput().type('atleast7characterslong');
         passInput().should('have.value', 'atleast7characterslong');
+    })
+
+    it('checks if the terms of service checkbox can be checked', () => {
+        termsCheckbox().should('exist');
+        termsCheckbox().should('not.be.checked');
+        termsCheckbox().click();
+        termsCheckbox().should('be.checked');
+        termsCheckbox().click();
+        termsCheckbox().should('not.be.checked');
     })
 })
