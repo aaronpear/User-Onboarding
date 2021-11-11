@@ -32,13 +32,13 @@ function App() {
     setFormValues({ ...formValues, [name]: value });
   }
 
-  const getUsers = () => {
-    axios.get('https://reqres.in/api/users')
-      .then(response => {
-        setUsers(response.data);
-      })
-      .catch(err => console.error(err))
-  }
+  // const getUsers = () => {
+  //   axios.get('https://reqres.in/api/users')
+  //     .then(response => {
+  //       setUsers(response.data);
+  //     })
+  //     .catch(err => console.error(err))
+  // }
 
 
   const postNewUser = newUser => {
@@ -73,9 +73,9 @@ function App() {
     schema.isValid(formValues).then(valid => setDisabled(!valid));
   }, [formValues])
 
-  useEffect(() => {
-    getUsers();
-  }, [])
+  // useEffect(() => {
+  //   getUsers();
+  // }, [])
 
   return (
     <div className="App">
@@ -91,7 +91,7 @@ function App() {
       />
       {/* {console.log(users.data)} */}
         {
-          users.data.map(user => (
+          users.map(user => (
             <User key={user.id} details={user} />
           ))
         }
